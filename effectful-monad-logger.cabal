@@ -1,0 +1,66 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           effectful-monad-logger
+version:        0.1.0.0
+synopsis:       Effectful-compatible monad-logger effect
+category:       Control
+description:    Please see the README on GitHub at <https://github.com/drlkf/effectful-monad-logger#readme>
+homepage:       https://github.com/drlkf/effectful-monad-logger#readme
+bug-reports:    https://github.com/drlkf/effectful-monad-logger/issues
+author:         drlkf
+maintainer:     drlkf.net
+copyright:      2026 drlkf
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/drlkf/effectful-monad-logger
+
+library
+  exposed-modules:
+      Effectful.Logger
+  other-modules:
+      Paths_effectful_monad_logger
+  autogen-modules:
+      Paths_effectful_monad_logger
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wno-orphans -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , effectful-core >=2.3 && <3
+    , monad-logger >=0.3.36 && <0.4
+    , text >=1.2 && <3
+  default-language: Haskell2010
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GADTs KindSignatures LambdaCase TypeFamilies TypeOperators UndecidableInstances
+
+test-suite effectful-monad-logger-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Effectful.LoggerSpec
+      Paths_effectful_monad_logger
+  autogen-modules:
+      Paths_effectful_monad_logger
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+    , base >=4.7 && <5
+    , effectful
+    , effectful-core
+    , effectful-monad-logger
+    , hspec
+    , monad-logger
+    , text
+  build-tools:
+      hspec-discover
+  default-language: Haskell2010

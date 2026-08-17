@@ -1,0 +1,66 @@
+name: effectful-monad-logger
+version: 0.1.0.0
+github: drlkf/effectful-monad-logger
+license: BSD-3-Clause
+author: drlkf
+maintainer: drlkf.net
+copyright: 2026 drlkf
+
+extra-source-files:
+  - README.md
+
+description: >-
+  Please see the README on GitHub at <https://github.com/drlkf/effectful-monad-logger#readme>
+synopsis: Effectful-compatible monad-logger effect
+category: Control
+
+dependencies:
+  - base >= 4.7 && < 5
+  - effectful-core >= 2.3 && < 3
+  - monad-logger >= 0.3.36 && < 0.4
+  - text >= 1.2 && < 3
+
+ghc-options:
+  - -Wall
+  - -Wno-orphans
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wmissing-export-lists
+  - -Wmissing-home-modules
+  - -Wpartial-fields
+  - -Wredundant-constraints
+
+library:
+  source-dirs: src
+  exposed-modules:
+    - Effectful.Logger
+  default-extensions:
+    - DataKinds
+    - FlexibleContexts
+    - FlexibleInstances
+    - GADTs
+    - KindSignatures
+    - LambdaCase
+    - TypeFamilies
+    - TypeOperators
+    - UndecidableInstances
+
+tests:
+  effectful-monad-logger-test:
+    main: Spec.hs
+    source-dirs: test
+    build-tools:
+      - hspec-discover
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - effectful-monad-logger
+      - effectful
+      - effectful-core
+      - monad-logger
+      - hspec
+      - text
