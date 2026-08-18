@@ -1,5 +1,5 @@
 name: effectful-monad-logger
-version: 0.1.0.0
+version: 0.0.1.0
 github: drlkf/effectful-monad-logger
 license: BSD-3-Clause
 author: drlkf
@@ -10,7 +10,9 @@ extra-source-files:
   - README.md
 
 description: >-
-  Please see the README on GitHub at <https://github.com/drlkf/effectful-monad-logger#readme>
+  Please see the README on GitHub at
+  <https://github.com/drlkf/effectful-monad-logger#readme>
+
 synopsis: Effectful-compatible monad-logger effect
 category: Control
 

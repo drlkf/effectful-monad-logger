@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           effectful-monad-logger
-version:        0.1.0.0
+version:        0.0.1.0
 synopsis:       Effectful-compatible monad-logger effect
 category:       Control
 description:    Please see the README on GitHub at <https://github.com/drlkf/effectful-monad-logger#readme>
@@ -40,7 +40,16 @@ library
     , monad-logger >=0.3.36 && <0.4
     , text >=1.2 && <3
   default-language: Haskell2010
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GADTs KindSignatures LambdaCase TypeFamilies TypeOperators UndecidableInstances
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      KindSignatures
+      LambdaCase
+      TypeFamilies
+      TypeOperators
+      UndecidableInstances
 
 test-suite effectful-monad-logger-test
   type: exitcode-stdio-1.0
@@ -52,15 +61,15 @@ test-suite effectful-monad-logger-test
       Paths_effectful_monad_logger
   hs-source-dirs:
       test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wno-orphans -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , effectful
     , effectful-core
     , effectful-monad-logger
     , hspec
     , monad-logger
     , text
-  build-tools:
-      hspec-discover
+  build-tool-depends:
+      hspec-discover:hspec-discover
   default-language: Haskell2010
