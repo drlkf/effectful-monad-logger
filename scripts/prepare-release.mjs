@@ -98,10 +98,7 @@ function main() {
   if (!version) throw new Error("usage: prepare-release.mjs VERSION")
   const root = resolve(new URL("..", import.meta.url).pathname)
   updateVersion(join(root, "package.yaml"), version)
-  execFileSync("stack", ["--system-ghc", "--no-install-ghc", "haddock"], {
-    cwd: root,
-    stdio: "inherit",
-  })
+  execFileSync("stack", ["haddock", "--no-haddock-deps"], { cwd: root, stdio: "inherit" })
   const keys = parseHoogle(readFileSync(findHoogleFile(join(root, ".stack-work")), "utf8"))
   const baselinePath = join(root, "api", "effectful-monad-logger.api")
   const baseline = existsSync(baselinePath)
@@ -116,10 +113,7 @@ function main() {
     if (isLocalDeclaration(source, name)) writeFileSync(file, addSince(source, name, version))
   }
   writeFileSync(baselinePath, `${keys.join("\n")}\n`)
-  execFileSync("stack", ["--system-ghc", "--no-install-ghc", "build"], {
-    cwd: root,
-    stdio: "inherit",
-  })
+  execFileSync("stack", ["build"], { cwd: root, stdio: "inherit" })
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) main()
