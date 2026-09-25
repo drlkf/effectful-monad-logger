@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           effectful-monad-logger
-version:        0.0.1.0
+version:        1.0.0
 synopsis:       Effectful-compatible monad-logger effect
 category:       Control
 description:    Please see the README on GitHub at <https://github.com/drlkf/effectful-monad-logger#readme>
