@@ -5,29 +5,27 @@ on:
   workflow_call:
 
 jobs:
-  build:
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      stack-yamls: ${{ steps.matrix.outputs.stack-yamls }}
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/cache@v4
-        with:
-          path: ~/.ghcup
-          key: ghcup-${{ runner.os }}-9.10.3
+      - id: matrix
+        uses: freckle/stack-action/generate-matrix@v5
 
-      - uses: haskell-actions/setup@v2
-        with:
-          ghc-version: 9.10.3
-          enable-stack: true
+  build:
+    needs: generate-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        stack-yaml: ${{ fromJSON(needs.generate-matrix.outputs.stack-yamls) }}
+    steps:
+      - uses: actions/checkout@v6
 
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.stack
-            .stack-work
-          key: stack-${{ runner.os }}-${{ hashFiles('stack.yaml.lock', 'effectful-monad-logger.cabal') }}
-          restore-keys: stack-${{ runner.os }}-
-
-      - run: stack --system-ghc --no-install-ghc build --test --only-dependencies
-
-      - run: stack --system-ghc --no-install-ghc test
+      - uses: freckle/stack-action@v5
+        env:
+          STACK_YAML: ${{ matrix.stack-yaml }}

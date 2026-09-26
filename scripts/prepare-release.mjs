@@ -74,9 +74,15 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
+export function toPvp(version) {
+  const match = version.match(/^(\d+)\.(\d+)\.(\d+)/)
+  if (!match) throw new Error(`Not a semantic version: ${version}`)
+  return `0.${match[1]}.${match[2]}.${match[3]}`
+}
+
 function updateVersion(path, version) {
   const source = readFileSync(path, "utf8")
-  writeFileSync(path, source.replace(/^version:\s+.*$/m, `version: ${version}`))
+  writeFileSync(path, source.replace(/^(version:\s+).*$/m, `$1${version}`))
 }
 
 function findHoogleFile(root) {
@@ -94,14 +100,12 @@ function findHoogleFile(root) {
 }
 
 function main() {
-  const version = process.argv[2]
-  if (!version) throw new Error("usage: prepare-release.mjs VERSION")
+  if (!process.argv[2]) throw new Error("usage: prepare-release.mjs VERSION")
+  const version = toPvp(process.argv[2])
   const root = resolve(new URL("..", import.meta.url).pathname)
   updateVersion(join(root, "package.yaml"), version)
-  execFileSync("stack", ["--system-ghc", "--no-install-ghc", "haddock"], {
-    cwd: root,
-    stdio: "inherit",
-  })
+  updateVersion(join(root, "effectful-monad-logger.cabal"), version)
+  execFileSync("stack", ["haddock", "--no-haddock-deps"], { cwd: root, stdio: "inherit" })
   const keys = parseHoogle(readFileSync(findHoogleFile(join(root, ".stack-work")), "utf8"))
   const baselinePath = join(root, "api", "effectful-monad-logger.api")
   const baseline = existsSync(baselinePath)
@@ -116,10 +120,7 @@ function main() {
     if (isLocalDeclaration(source, name)) writeFileSync(file, addSince(source, name, version))
   }
   writeFileSync(baselinePath, `${keys.join("\n")}\n`)
-  execFileSync("stack", ["--system-ghc", "--no-install-ghc", "build"], {
-    cwd: root,
-    stdio: "inherit",
-  })
+  execFileSync("stack", ["build"], { cwd: root, stdio: "inherit" })
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) main()

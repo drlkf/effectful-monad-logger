@@ -23,20 +23,10 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          path: ~/.ghcup
-          key: ghcup-${{ runner.os }}-9.10.3
-
-      - uses: haskell-actions/setup@v2
-        with:
-          ghc-version: 9.10.3
-          enable-stack: true
-
-      - uses: actions/cache@v4
-        with:
           path: |
             ~/.stack
             .stack-work
-          key: stack-${{ runner.os }}-${{ hashFiles('stack.yaml.lock', 'effectful-monad-logger.cabal') }}
+          key: stack-${{ runner.os }}-${{ hashFiles('stack.yaml.lock') }}
           restore-keys: stack-${{ runner.os }}-
 
       - uses: actions/setup-node@v4
