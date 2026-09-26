@@ -17,6 +17,8 @@ copyright:      2026 drlkf
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
+tested-with:
+    GHC == 9.8.4 || == 9.10.3
 extra-source-files:
     README.md
 

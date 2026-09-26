@@ -5,19 +5,26 @@ on:
   workflow_call:
 
 jobs:
-  build:
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      stack-yamls: ${{ steps.matrix.outputs.stack-yamls }}
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.stack
-            .stack-work
-          key: stack-${{ runner.os }}-${{ hashFiles('stack.yaml.lock') }}
-          restore-keys: stack-${{ runner.os }}-
+      - id: matrix
+        uses: freckle/stack-action/generate-matrix@v5
 
-      - run: stack build --test --only-dependencies
+  build:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stack-yaml: ${{ fromJSON(needs.generate-matrix.outputs.stack-yamls) }}
+    steps:
+      - uses: actions/checkout@v6
 
-      - run: stack test
+      - uses: freckle/stack-action@v5
+        env:
+          STACK_YAML: ${{ matrix.stack-yaml }}

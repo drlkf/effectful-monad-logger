@@ -16,6 +16,8 @@ description: >-
 synopsis: Effectful-compatible monad-logger effect
 category: Control
 
+tested-with: GHC == 9.8.4 || == 9.10.3
+
 dependencies:
   - base >= 4.7 && < 5
   - effectful-core >= 2.3 && < 3
