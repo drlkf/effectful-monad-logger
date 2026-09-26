@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseHoogle, addSince, isLocalDeclaration } from "./prepare-release.mjs";
+import { parseHoogle, addSince, isLocalDeclaration, toPvp } from "./prepare-release.mjs";
+
+test("toPvp maps a semantic version to four PVP components", () => {
+  assert.equal(toPvp("1.2.3"), "0.1.2.3");
+  assert.equal(toPvp("1.2.3-beta.1"), "0.1.2.3");
+  assert.throws(() => toPvp("1.2"));
+});
 
 test("parseHoogle finds declarations and instances, excluding indirect exports", () => {
   const hoogle = `@package effectful-monad-logger 0.1.1
